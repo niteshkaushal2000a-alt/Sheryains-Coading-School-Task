@@ -16,6 +16,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function weatherData() {
 
     return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+            return getWeatherByCity("Kanpur")
+                .then(resolve)
+                .catch(reject);
+        }
 
         navigator.geolocation.getCurrentPosition(
 
@@ -47,7 +52,8 @@ async function weatherData() {
                     resolve(weather);
 
                 } catch (error) {
-                    reject(error);
+                    const weather = await getWeatherByCity("Kanpur");
+                    resolve(weather);
                 }
 
             },
